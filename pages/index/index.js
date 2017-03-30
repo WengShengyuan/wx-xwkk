@@ -1,26 +1,52 @@
 //index.js
-//获取应用实例
 var app = getApp()
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {}
+    userInfo: {},
+    scanResult: '',
+    filePath: ''
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
+
   onLoad: function () {
-    console.log('onLoad')
     var that = this
-    //调用应用实例的方法获取全局数据
-    app.getUserInfo(function(userInfo){
-      //更新数据
+    app.getUserInfo(function (userInfo) {
       that.setData({
-        userInfo:userInfo
+        userInfo: userInfo
       })
     })
+  },
+  scan: function () {
+    var that = this;
+    wx.scanCode({
+      success: (res) => {
+        that.setData({ scanResult: res.result });
+      }
+    })
+  },
+  startRec: function () {
+    var that = this;
+    wx.startRecord({
+      success: function (res) {
+        that.setData({ filePath: res.tempFilePath });
+        // that.audioCtx = wx.createAudioContext('myAudio')
+        // that.audioCtx.play();
+        wx.playVoice({
+          filePath: res.tempFilePath,
+          complete: function () {
+          }
+        })
+      },
+      fail: function (res) {
+        //录音失败
+        wx.showToast({
+          title: 'fail',
+          icon: 'fail',
+          duration: 2000
+        })
+      }
+    })
+  },
+  stopRec: function () {
+    wx.stopRecord()
   }
 })

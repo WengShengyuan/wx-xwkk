@@ -16,6 +16,15 @@
   color: #aaa;
 }
 
-.usermotto {
-  margin-top: 200px;
+.button-set {
+   width:150px;
+  margin-top: 50px;
+}
+
+.btn-rec {
+  margin-top:10px;
+}
+
+.btn-scan {
+  margin-top:10px;
 }
